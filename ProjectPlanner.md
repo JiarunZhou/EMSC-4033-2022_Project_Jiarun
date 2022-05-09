@@ -27,10 +27,10 @@ As a result, this project aims to generate an integrated module for preprocessin
   
 ### Reference list  
 
-1. CloudNet: Ground‐based cloud classification with deep convolutional neural network
-2. Ground-Based Cloud Classification Using Task-Based Graph Convolutional Network
-3. DeepCloud: Ground-Based Cloud ImageCategorization Using Deep Convolutional Features
-4. Deep Convolutional Activations-Based Featuresfor Ground-Based Cloud Classification
+1. Zhang, J., et al. (2018). "CloudNet: Ground‐based cloud classification with deep convolutional neural network." Geophysical Research Letters 45(16): 8665-8672.
+2. Liu, S., et al. (2020). "Ground‐based cloud classification using task‐based graph convolutional network." Geophysical Research Letters 47(5): e2020GL087338.
+3. Ye, L., et al. (2017). "DeepCloud: Ground-based cloud image categorization using deep convolutional features." IEEE Transactions on Geoscience and Remote Sensing 55(10): 5729-5740.
+4. Shi, C., et al. (2017). "Deep convolutional activations-based features for ground-based cloud classification." IEEE Geoscience and Remote Sensing Letters 14(6): 816-820.
 
 ## Resources & Timeline
 
