@@ -38,7 +38,7 @@ _What do you have at your disposal already that will help the project along. Did
   - I’ll be using data of X from satellite and then also data from baby blue seals…
   - I’ll step on existing package Y and build extra functionality on top of class W.
   - I’ll use textbook Z that describes algorithms a, b, c
-  - …
+  -
 )
 
 ## Testing, validation, documentation
