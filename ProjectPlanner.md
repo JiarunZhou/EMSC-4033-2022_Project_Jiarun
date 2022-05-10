@@ -53,7 +53,7 @@ In this first week, I will focus on the project plan and look for existing packa
 
 Furthermore, outcomes of this project might be applied into my following Masters project, which aims to detect earthquake events and pick seismic wave phases. Since seismograms have totally different characteristics compared to cloud images, it would be a meaningful but challenging task to fit the integrated data-preprocessing module built in this project to them.
 
-## Testing, validation, documentation
+## Testing
 
 Testing work for this project will be implemented in each step:
 
