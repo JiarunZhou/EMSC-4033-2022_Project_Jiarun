@@ -42,7 +42,7 @@ I have done an Honours project that uses deep-learning algorithms to classify So
 
 Some existing cloud image data and Python packages make this project achievable in three weeks:  
 
-  - A dataset consisting of 177 cloud images with the resolution of 720\*576 pixels captured from Macquarie Island and another one consisting of 1200 cloud images with the same resolution captured from the Kerguelen Plateau are used in this project to test if the built module can process data correctly.
+  - A dataset consisting of 1200 cloud images with the resolution of 720\*576 pixels captured from the Kerguelen Plateau are used in this project to test if the built module can process data correctly.
   - Package [`cv2`](https://pypi.org/project/opencv-python) providing some functions like converting data color and size is used to build the functionality that imports and converts raw images into appropriate format in the module.
   - Input data in this project is stored in an array data type from package [`numpy`](https://numpy.org). This package provides convenient operations of array calculation for data processing.
   - Package [`matplotlib.pyplot`](https://matplotlib.org/3.5.0/api/_as_gen/matplotlib.pyplot.html) is used to plot some image samples, which is helpful for users to see if the data is input correctly.
