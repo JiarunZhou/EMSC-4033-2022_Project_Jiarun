@@ -57,10 +57,9 @@ Furthermore, outcomes of this project might be applied into my following Masters
 
 Testing work for this project will be implemented in each step:
 
-  - This image dataset will be first input. The size of input images and the number of elements in the *Image* and *Labels* arrays (the number of them should be consistent) will be tested.
-  - Labels will be converted to one hot matrices. For an one hot matrix, every value in it should be 0 or 1. Element values of the output label array in this step will be tested.
-  - The full dataset then will be split into training and test sets. Whether the number of elements in training and test sets satisfies the given ratio will be tested.
-  - Mean RGB values calculated from the whole dataset are subtracted from each image. Mean RGB values of the returned dataset will be tested, which should be 0.
+  - This image dataset will be first input. Whether the cloud class array is returned and the number of elements in the *Image* and *Labels* arrays (the number of them should be consistent) will be tested.
+  - Some random image samples will be plotted. Whether a figure is returned correctly will be tested.
+  - Mean RGB values calculated from the whole dataset are subtracted from each image. Mean RGB values of the returned array will be tested, which should be 0.
   - The original dataset will be augmented by passing through an defined image data generator. The type of the generated iterator for input data will be tested to make sure it is generated correctly.
 
 If all test functions run successfully, we can believe the module has implemented all functions expected and works well. However, the module's actual performance should be validated through applying it to the training of deep-learning models. This would be a part of future work.

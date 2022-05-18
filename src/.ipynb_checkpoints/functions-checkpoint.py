@@ -7,7 +7,6 @@
 
 """
 
-from dependencies import *
 
 # Import data
 def get_images(directory, IMAGE_SIZE = (284, 227),Crop_Size = 227, random_value = 0):
@@ -17,7 +16,18 @@ def get_images(directory, IMAGE_SIZE = (284, 227),Crop_Size = 227, random_value 
     IMAGE_SIZE should be reset if the shape of input images has changed.
     Crop_Size should be set according to the requirement of models.
     This functions should be modified if input dataset has different structure of subfolders.
+    
+    Example:
+    >>> from functions import get_images
+    >>>
+    >>> Images, Labels, classes = get_images(directory = 'K-Axis Cloud Types', random_value = 1)
     '''
+    
+    import os
+    import cv2
+    import numpy as np
+    from sklearn.utils import shuffle
+    from tqdm import tqdm
     
     Images = []
     Labels = []
@@ -46,7 +56,7 @@ def get_images(directory, IMAGE_SIZE = (284, 227),Crop_Size = 227, random_value 
             i += 1
             classes.append(folder2)
             
-            for file in os.listdir(os.path.join(os.path.join(directory, folder1), folder2)): # Extracting the file name of the image from Class Label folder
+            for file in tqdm(os.listdir(os.path.join(os.path.join(directory, folder1), folder2))): # Extracting the file name of the image from Class Label folder
                 
                 image_path = os.path.join(os.path.join(os.path.join(directory, folder1), folder2), file) # Get the path name of the image
                 image = cv2.imread(image_path) #Reading the image (OpenCV)
@@ -60,19 +70,33 @@ def get_images(directory, IMAGE_SIZE = (284, 227),Crop_Size = 227, random_value 
     Images = np.array(Images, dtype = 'float32')
     Labels = np.array(Labels, dtype = 'int32')
     classes = np.array(classes)
+    classes = np.unique(classes) # Select the unique cloud categories
     
     # Shuffle images and labels
     Images_s, Labels_s = shuffle(Images, Labels, random_state = random_value)
     
-    return Images_s, Labels_s, np.unique(classes)
+    # Show some details of the images
+    print ("Number of image samples = " + str(Images_s.shape[0]))
+    print ("Image shape: " + str(Images_s.shape[1:3]))
+    print ("Categories in this image dataset:", classes)
+
+    return Images_s, Labels_s, classes
 
 # Display some image samples
 def display_random_image(class_names, images, labels):
     
     '''
     Return a figure of some image samples.
-    Input images should be normalized in advance.
+    Input images should be normalized in advance and have > 25 samples.
+    
+    Example:
+    >>> from functions import display_random_image
+    >>>
+    >>> Fig = display_random_image(classes, Images, Labels)
     '''
+    
+    import matplotlib.pyplot as plt
+    import numpy as np
     
     fig = plt.figure(figsize=(10,10))
     fig.suptitle("Some image samples", fontsize=16)
@@ -87,7 +111,8 @@ def display_random_image(class_names, images, labels):
         plt.title('{} :'.format(index) +class_names[labels[index]])
     
     plt.savefig("random_images")
-    plt.show()
+    
+    return fig
     
 # Subtract mean RGB values calculated from the training set for each cloud image
 def subtract_meanRGB(xtrain):
@@ -95,8 +120,15 @@ def subtract_meanRGB(xtrain):
     '''
     Return the images whose mean RGB values have been subtracted from each pixel.
     Input images should have three channels: R, G and B.
+    
+    Example:
+    >>> from functions import Image_Generator
+    >>>
+    >>> x_train_mean = subtract_meanRGB(x_train)
     '''
 
+    import numpy as np
+    
     imagenumber = xtrain.shape[0]
     imagesize = xtrain.shape[1]
     
@@ -116,7 +148,7 @@ def subtract_meanRGB(xtrain):
     mean_G = np.mean(mean_G_1)
     mean_B = np.mean(mean_B_1)
     
-    print('Mean RGB values:',mean_R,mean_G,mean_B)
+    #print('Mean RGB values:',mean_R,mean_G,mean_B)
     
     #Subtract
     X_train_mean[:,:,:,0] = xtrain[:,:,:,0]-mean_R
@@ -129,7 +161,6 @@ def subtract_meanRGB(xtrain):
 def Image_Generator(images,
                     labels,
                     Batch_size=8,
-                    Featurewise_center=False,
                     Zca_whitening=False,
                     Rotation_range=0,
                     Width_shift_range=0.0,
@@ -140,12 +171,21 @@ def Image_Generator(images,
     '''
     Return a define data generator that can be directly used for training deep-learning models.
     Only a subset of augmentation methods is provided for cloud iamges in this fucntion.
+    
+    Example:
+    >>> from functions import Image_Generator
+    >>>
+    >>> TrainGen = Image_Generator(x_train,y_train,
+                           Horizontal_flip=True,
+                           Vertical_flip = True,
+                           Rotation_range=180)
     '''
+    
+    from tensorflow.keras.preprocessing.image import ImageDataGenerator 
     
     #Define the generator
     #Only a part of methods is useful for cloud images here.
     datagen = ImageDataGenerator(
-        featurewise_center=Featurewise_center,
         zca_whitening=Zca_whitening,
         rotation_range=Rotation_range,
         width_shift_range=Width_shift_range,
