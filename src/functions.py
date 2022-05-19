@@ -13,6 +13,7 @@ def get_images(directory, IMAGE_SIZE = (284, 227),Crop_Size = 227, random_value 
     
     '''
     Return cloud categories of the dataset and images and labels after resize, cropping, and shuffling.
+    ** Take care image size must be larger than crop size. **
     IMAGE_SIZE should be reset if the shape of input images has changed.
     Crop_Size should be set according to the requirement of models.
     This functions should be modified if input dataset has different structure of subfolders.
@@ -33,6 +34,7 @@ def get_images(directory, IMAGE_SIZE = (284, 227),Crop_Size = 227, random_value 
     Labels = []
     classes = []
     i = 0
+    
     # Prepare some values for iamge cropping
     length = int(IMAGE_SIZE[0]/2)
     width = int(IMAGE_SIZE[1]/2)
@@ -44,21 +46,28 @@ def get_images(directory, IMAGE_SIZE = (284, 227),Crop_Size = 227, random_value 
     length_l = length-Crop_Size_2
     length_u = length_l + Crop_Size
     
-    # Import images and labels from provided directory
+    assert width_l>=0 and length_l>=0, "Your image size is too small."
+    
     print("Loading {}".format(directory))
+
+    # Import images and labels from provided directory
     for folder1 in os.listdir(directory):
         print("-----------------------------------------------------------")
         print(folder1)
         
-        for folder2 in os.listdir(os.path.join(directory, folder1)): #Main Directory where each class label is present as folder name.
+        # Main Directory where each class label is present as folder name.
+        for folder2 in os.listdir(os.path.join(directory, folder1)): 
             
             label = i % 4
             i += 1
             classes.append(folder2)
             
-            for file in tqdm(os.listdir(os.path.join(os.path.join(directory, folder1), folder2))): # Extracting the file name of the image from Class Label folder
+            # Extracting the file name of the image from Class Label folder
+            for file in tqdm(os.listdir(os.path.join(os.path.join(directory, folder1), folder2))): 
                 
-                image_path = os.path.join(os.path.join(os.path.join(directory, folder1), folder2), file) # Get the path name of the image
+                # Get the path name of the image
+                image_path = os.path.join(os.path.join(os.path.join(directory, folder1), folder2), file) 
+                
                 image = cv2.imread(image_path) #Reading the image (OpenCV)
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                 image = cv2.resize(image,IMAGE_SIZE) #Resize the image
@@ -98,6 +107,15 @@ def display_random_image(class_names, images, labels):
     import matplotlib.pyplot as plt
     import numpy as np
     
+    # Handle possible errors in input image variable
+    try:
+        n_image = images.shape[0]
+        print("Display 25 image samples from total",n_image,"images.")
+    except TypeError:
+        print("Please input images with correct type.")
+    except:
+        print("Unknown error. Please confirm your input.")
+        
     fig = plt.figure(figsize=(10,10))
     fig.suptitle("Some image samples", fontsize=16)
     
@@ -129,8 +147,17 @@ def subtract_meanRGB(xtrain):
 
     import numpy as np
     
-    imagenumber = xtrain.shape[0]
-    imagesize = xtrain.shape[1]
+    # Handle possible errors in input image variable
+    try:
+        imagenumber = xtrain.shape[0]
+        imagesize = xtrain.shape[1]
+        print("Subtract mean RGB values on",imagenumber,"images.")
+    except TypeError:
+        print("Please input images with correct type.")
+    except IndexError:
+        print("Please input images with correct shape.")
+    except:
+        print("Unknown error. Please confirm your input.")
     
     mean_R_1 = np.zeros(imagenumber)
     mean_G_1 = np.zeros(imagenumber)
@@ -171,6 +198,7 @@ def Image_Generator(images,
     '''
     Return a define data generator that can be directly used for training deep-learning models.
     Only a subset of augmentation methods is provided for cloud iamges in this fucntion.
+    Possible values of `Width_shift_range` and `Height_shift_range` are floats in the interval [-1.0, +1.0).
     
     Example:
     >>> from functions import Image_Generator
@@ -185,15 +213,21 @@ def Image_Generator(images,
     
     #Define the generator
     #Only a part of methods is useful for cloud images here.
-    datagen = ImageDataGenerator(
-        zca_whitening=Zca_whitening,
-        rotation_range=Rotation_range,
-        width_shift_range=Width_shift_range,
-        height_shift_range=Height_shift_range,
-        horizontal_flip=Horizontal_flip,
-        vertical_flip=Vertical_flip
-    )
     
+    try: 
+        datagen = ImageDataGenerator(
+            zca_whitening=Zca_whitening,
+            rotation_range=Rotation_range,
+            width_shift_range=Width_shift_range,
+            height_shift_range=Height_shift_range,
+            horizontal_flip=Horizontal_flip,
+            vertical_flip=Vertical_flip
+        )
+    except (TypeError, ValueError): # Hnadle possible errors
+        print("Confirm your input arguments meet the function's requirement.")
+    except:
+        print("Something unexpected happened.")
+
     if Zca_whitening == True:
         datagen.fit(images)
     
