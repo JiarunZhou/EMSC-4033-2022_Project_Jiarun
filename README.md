@@ -2,7 +2,7 @@
 
 This repository is for an assessment of EMSC-4033-2022, in which I build a cloud image data preprocessing module for deep-learning models. In this project, cloud image dataset is imported and goes through some data processing procedures and data augmentation. Finally, this module outputs a training image genetator and a validating image generator, which can be input into a deep-learning model for use directly.
 
-In this repository, I use a cloud image dataset containing 1200 images collected from the Kerguelen Plateau. If the users would like to use other datasets with different formats, please check the function settings.
+In this repository, I use a cloud image dataset containing 1200 images collected from the Kerguelen Plateau. If the users would like to use other datasets with different formats, please check [function settings](https://github.com/JiarunZhou/EMSC-4033-2022_Project_Jiarun/blob/16e50bf8a610cfa42300e1114a3478f89567720f/src/functions.py).
 
 In data **processing**, this module achieves:
 
